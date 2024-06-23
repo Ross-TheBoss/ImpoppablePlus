@@ -7,7 +7,9 @@ ImpoppablePlus
 </h1>
 
 
-Extends Impoppable mode by making it an entirely new difficulty, complete with 4 new game modes: 
+Extends Impoppable mode by making it an entirely new difficulty.
+
+The new Impoppable difficulty adds 4 game modes: 
 - Support Only
 - Double Speed
 - Mastery Mode
