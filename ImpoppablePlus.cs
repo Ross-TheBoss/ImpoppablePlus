@@ -7,12 +7,16 @@ using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2Cpp;
 using Il2CppAssets.Scripts.Models;
-using Il2CppAssets.Scripts.Unity.UI_New.InGame;
-using Il2CppAssets.Scripts.Unity.UI_New.InGame.RightMenu.Powers;
+using Il2CppAssets.Scripts.Models.Bloons;
+using Il2CppAssets.Scripts.Models.Rounds;
+using Il2CppAssets.Scripts.Simulation.Bloons;
+using Il2CppAssets.Scripts.Simulation.Track;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.DifficultySelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.MapSelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.ModeSelect;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppNinjaKiwi.Common;
+using Il2CppNinjaKiwi.Common.ResourceUtils;
 using ImpoppablePlus;
 using MelonLoader;
 using UnityEngine;
@@ -45,7 +49,9 @@ public class ImpoppablePlus : BloonsTD6Mod
 
     public override void OnUpdate()
     {
+        #if DEBUG
         CashCalculator.OnUpdate();
+        #endif
     }
 
     public static void exportImage(Image image, string fileName) {
@@ -241,13 +247,9 @@ public class ImpoppablePlus : BloonsTD6Mod
     {
         [HarmonyPrefix]
         private static void Prefix(MapSelectScreen __instance) {
-            ModHelper.Msg<ImpoppablePlus>("Map Select Screen Opened!");
-
             __instance.gameObject.GetComponentsInChildren<MapButton>(includeInactive: true)
                 .Do((MapButton mapButton) =>
                 {
-                    ModHelper.Msg<ImpoppablePlus>($"Map Found: {mapButton.mapName.text}!");
-
                     /*
                     Empty Gold:
                         Local Position: 105 45
@@ -274,7 +276,6 @@ public class ImpoppablePlus : BloonsTD6Mod
                         Relative Position: -64.3 -65
 
                     */
-
                     Vector3 impoppableMedalLocalPosition = new Vector3(313.0f, 45.0f);
                     Vector3 chimpsMedalRelativePosition = new Vector3(66.0f, -13.0f);
                     Vector3 supportOnlyRelativePosition = new Vector3(-69.0f, -12.0f);

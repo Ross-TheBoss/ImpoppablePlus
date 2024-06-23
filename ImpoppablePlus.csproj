@@ -13,5 +13,5 @@
         <Content Include=".github\workflows\build.yml" />
     </ItemGroup>
 
-    <Import Project="..\btd6.targets" />
+    <Import Project="..\btd6-linux.targets" />
 </Project>

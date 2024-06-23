@@ -21,7 +21,6 @@ public class MasteryRounds : ModRoundSet
     public override string BaseRoundSet => RoundSetType.Default;
     public override int DefinedRounds => BaseRounds.Count;
     public override string DisplayName => "Mastery Mode";
-    public override bool CustomHints => true;
     public override string Icon => "Mastery";
 
     private static readonly Dictionary<string, string> promotionMap = new Dictionary<string, string>()
@@ -218,7 +217,7 @@ internal static class RoundEmissionsHooks
 internal static class SimulationPatches
 {
     private static int currentRound;
-    public const int roundsEarly = 15;
+    public const int roundsEarly = 20;
 
     private static List<(int start, int end, double multiplier)> multipliers = new List<(int start, int end, double multiplier)>
     {
@@ -232,6 +231,7 @@ internal static class SimulationPatches
 
     public static List<(int start, int end, double multiplier)> getMasteryMultipliers(int roundsEarly)
     {
+        // Cash from popping bloons is halved.
         return new List<(int start, int end, double multiplier)>{
             (1, 50-roundsEarly, 1.0),
             (51-roundsEarly, 60-roundsEarly, 0.5),

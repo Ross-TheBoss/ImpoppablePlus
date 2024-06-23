@@ -7,6 +7,7 @@ namespace ImpoppablePlus;
 [RegisterTypeInIl2Cpp(false)]
 public class MatchImage : MonoBehaviour
 {
+    #nullable enable
     public GameObject imageToCopy;
 
     public MatchImage(System.IntPtr ptr) : base(ptr)
