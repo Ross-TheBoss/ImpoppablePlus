@@ -178,7 +178,9 @@ public class Mastery : ModGameMode
     public override void ModifyBaseGameModeModel(ModModel gameModeModel)
     {
         gameModeModel.UseRoundSet<MasteryRounds>();
+        #if DEBUG
         ModHelper.Msg<ImpoppablePlus>($"Mastery Mode: Reducing cash per pop {SimulationPatches.roundsEarly} rounds early.");
+        #endif
     }
 }
 
