@@ -7,8 +7,8 @@ public static class ModHelperData
     public const string Name = "Impoppable Plus";
 
     public const string Description = "Extends Impoppable mode by making it an entirely new difficulty, complete with 4 new game modes: "
-                                    + "Support Only, Double Speed, Mastery Mode and Impoppable Sandbox";
-    public const string RepoOwner = "Ross-TheBoss"; // TODO add your github username hero, also in the download url in README.md
-    public const string RepoName = "ImpoppablePlus"; // TODO add your repo name here, also in the download url in README.md
+                                    + "Support Only, Double Speed, Mastery Mode and Impoppable Sandbox.";
+    public const string RepoOwner = "Ross-TheBoss";
+    public const string RepoName = "ImpoppablePlus";
     public const string Author = "Timotheee and Ross-TheBoss";
 }

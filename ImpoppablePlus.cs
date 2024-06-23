@@ -7,16 +7,10 @@ using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2Cpp;
 using Il2CppAssets.Scripts.Models;
-using Il2CppAssets.Scripts.Models.Bloons;
-using Il2CppAssets.Scripts.Models.Rounds;
-using Il2CppAssets.Scripts.Simulation.Bloons;
-using Il2CppAssets.Scripts.Simulation.Track;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.DifficultySelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.MapSelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.ModeSelect;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppNinjaKiwi.Common;
-using Il2CppNinjaKiwi.Common.ResourceUtils;
 using ImpoppablePlus;
 using MelonLoader;
 using UnityEngine;
@@ -58,7 +52,9 @@ public class ImpoppablePlus : BloonsTD6Mod
         image.SaveToPNG(fileName);
 
         var texRect = image.sprite.textureRect;
+        #if DEBUG
         ModHelper.Msg<ImpoppablePlus>($"{fileName}: {texRect.width}x{texRect.height}+{texRect.x}+{texRect.y}");
+        #endif
     }
 
     [HarmonyPatch(typeof(DifficultySelectScreen), nameof(DifficultySelectScreen.Open))]
@@ -67,7 +63,9 @@ public class ImpoppablePlus : BloonsTD6Mod
         [HarmonyPrefix]
         private static void Prefix(DifficultySelectScreen __instance)
         {
+            #if DEBUG
             ModHelper.Msg<ImpoppablePlus>("Injecting into difficulty select screen...");
+            #endif
 
             GameObject difficulties = __instance.gameObject;
 
@@ -96,7 +94,9 @@ public class ImpoppablePlus : BloonsTD6Mod
 
             newButton.gameObject.GetComponentInChildrenByName<Button>("Button").SetOnClick(() =>
             {
+                #if DEBUG
                 ModHelper.Msg<ImpoppablePlus>("Impoppable Button Clicked!");
+                #endif
                 __instance.OpenModeSelectUi("Hard");
                 impoppableDifficultySelected = true;
             }
@@ -153,7 +153,9 @@ public class ImpoppablePlus : BloonsTD6Mod
         {
             if (!impoppableDifficultySelected) return;
 
+            #if DEBUG
             ModHelper.Msg<ImpoppablePlus>("Impoppable Mode Screen Opened!");
+            #endif
 
             var impoppableModes = __instance.hardModes.gameObject;
             impoppableModes.name = "ImpoppableModes";
@@ -209,7 +211,9 @@ public class ImpoppablePlus : BloonsTD6Mod
             sandboxButton.unlockMode = "Impoppable";
             sandboxButton.button.AddOnClick(() =>
             {
+                #if DEBUG
                 ModHelper.Msg<ImpoppablePlus>("Sandbox Button Clicked!");
+                #endif
                 impoppableSandboxSelected = true;
             });
 
