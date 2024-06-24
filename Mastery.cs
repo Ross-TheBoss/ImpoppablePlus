@@ -122,7 +122,7 @@ public class MasteryRounds : ModRoundSet
         {1, "Mastery mode... red bloons become blue bloons."},
         {2, "Blue bloons become green bloons."},
         {5, "Green bloons become yellow bloons."},
-        {11, "I think you get the point."},
+        // {11, "I think you get the point."},
         {37, "First 2 MOAB-Class Bloons next round."},
         {39, "MOABs become BFBs..."},
         {45, "Fortified MOABs coming up next."},
@@ -131,15 +131,18 @@ public class MasteryRounds : ModRoundSet
         {62, "Next level will be hard. Really hard."},
         {79, "No ZOMGs so far... not too BAD was it?"},
         {84, "It's about to get worse though..."},
-        {96, "Fortified BADs - as bad as it gets... right?"},
-        //{99, "The final round. Throw everything you've got at the Tier 3 Bloonarius. You won't make a dent."},
+        {96, "Fortified BADs - as bad as it gets."},
+        {99, "Do you remember the final round of impoppable mode from BTD5?"},
         {100, "Congratulations on beating round 100! Enjoy your reward!"},
-        {139, "Only the BTD6 elite can beat the next round."},
-        {199, "This mod knows no limits."}
     };
 
     public override void ModifyRoundModels(RoundModel roundModel, int round)
     {
+        if (round == 99){ // Round 100 patch (5 fortified BADs)
+            roundModel.groups[0].count = 5;
+            roundModel.groups[0].end = 1500;
+        }
+        
         for (int k = 0; k < roundModel.groups.Length; k++)
         {
             BloonGroupModel bloonGroup = roundModel.groups[k];
