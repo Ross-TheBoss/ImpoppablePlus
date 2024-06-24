@@ -1,3 +1,4 @@
+using System.Linq;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Enums;
@@ -11,9 +12,11 @@ using Il2CppAssets.Scripts.Unity.UI_New.Main.DifficultySelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.MapSelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.ModeSelect;
 using Il2CppNinjaKiwi.Common;
+using Il2CppNinjaKiwi.Common.ResourceUtils;
 using ImpoppablePlus;
 using MelonLoader;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 [assembly: MelonInfo(typeof(ImpoppablePlus.ImpoppablePlus), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
@@ -41,12 +44,13 @@ public class ImpoppablePlus : BloonsTD6Mod
         result.towers.Do((towerModel) => towerModel.cost *= 10f / 9f);
     }
 
+    #if DEBUG
     public override void OnUpdate()
     {
-        #if DEBUG
+        
         CashCalculator.OnUpdate();
-        #endif
     }
+    #endif
 
     public static void exportImage(Image image, string fileName) {
         image.SaveToPNG(fileName);
@@ -286,6 +290,10 @@ public class ImpoppablePlus : BloonsTD6Mod
                     Vector3 doubleSpeedRelativePosition = new Vector3(-48.0f, -66.0f);
                     Vector3 masteryRelativePosition = new Vector3(46.0f, -64.0f);
 
+                    var matchTexture = mapButton.mapBackground.gameObject.AddComponent<MatchTexture>();
+                    matchTexture.basicBackground = mapButton.basicBackground;
+                    matchTexture.textureToCopy = ModContent.GetTexture<ImpoppablePlus>("WhiteBackground");
+
                     // Medals
                     var clicksMedal = mapButton.medals.GetComponentInChildrenByName<Transform>("Clicks").gameObject;
                     clicksMedal.transform.localPosition = impoppableMedalLocalPosition + chimpsMedalRelativePosition;
@@ -322,21 +330,21 @@ public class ImpoppablePlus : BloonsTD6Mod
                     supportOnlyMedalContainer.transform.localPosition = impoppableMedalLocalPosition + supportOnlyRelativePosition;
                     supportOnlyMedalContainer.name = "Empty (15)";
                     supportOnlyMedalContainer.transform.MoveAfterSibling(clicksMedalContainer.transform, false);
-                    var supportOnlyMatchImage = supportOnlyMedalContainer.AddComponent<MatchImage>();
+                    var supportOnlyMatchImage = supportOnlyMedalContainer.AddComponent<MatchColor>();
                     supportOnlyMatchImage.imageToCopy = clicksMedalContainer;
 
                     var doubleSpeedMedalContainer = Object.Instantiate(clicksMedalContainer, clicksMedalContainer.transform.parent);
                     doubleSpeedMedalContainer.transform.localPosition = impoppableMedalLocalPosition + doubleSpeedRelativePosition;
                     doubleSpeedMedalContainer.name = "Empty (16)";
                     doubleSpeedMedalContainer.transform.MoveAfterSibling(supportOnlyMedalContainer.transform, false);
-                    var doubleSpeedMatchImage = doubleSpeedMedalContainer.AddComponent<MatchImage>();
+                    var doubleSpeedMatchImage = doubleSpeedMedalContainer.AddComponent<MatchColor>();
                     doubleSpeedMatchImage.imageToCopy = clicksMedalContainer;
 
                     var masteryMedalContainer = Object.Instantiate(clicksMedalContainer, clicksMedalContainer.transform.parent);
                     masteryMedalContainer.transform.localPosition = impoppableMedalLocalPosition + masteryRelativePosition;
                     masteryMedalContainer.name = "Empty (17)";
                     masteryMedalContainer.transform.MoveAfterSibling(doubleSpeedMedalContainer.transform, false);
-                    var masteryMatchImage = masteryMedalContainer.AddComponent<MatchImage>();
+                    var masteryMatchImage = masteryMedalContainer.AddComponent<MatchColor>();
                     masteryMatchImage.imageToCopy = clicksMedalContainer;
                 });
         }
