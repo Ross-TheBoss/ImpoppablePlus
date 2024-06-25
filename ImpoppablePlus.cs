@@ -1,3 +1,4 @@
+using System.Linq;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Enums;
@@ -6,14 +7,21 @@ using BTD_Mod_Helper.Api.Scenarios;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2Cpp;
+using Il2CppAssets.Scripts.Data;
+using Il2CppAssets.Scripts.Data.Quests;
 using Il2CppAssets.Scripts.Models;
+using Il2CppAssets.Scripts.Models.Store.Loot;
+using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.DifficultySelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.MapSelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.ModeSelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppNinjaKiwi.Common;
+using Il2CppSystem.Collections.Generic;
+using Il2CppTMPro;
 using ImpoppablePlus;
 using MelonLoader;
+using NAudio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +35,8 @@ public class ImpoppablePlus : BloonsTD6Mod
     public static bool impoppableDifficultySelected = false;
 
     public static bool impoppableSandboxSelected = false;
+
+    public static string selectedMapId = "";
 
     public override void OnApplicationStart()
     {
@@ -115,6 +125,37 @@ public class ImpoppablePlus : BloonsTD6Mod
                 impoppableDifficultySelected = true;
             }
             );
+
+            // Fix Monkey Money Rewards
+            var ImpoppableMMRewardsDifficultyScreen = newButton.GetComponentInChildrenByName<Transform>("MMRewardsDifficultyScreen").gameObject;
+            var alterImpoppableRewards = ImpoppableMMRewardsDifficultyScreen.AddComponent<AlterRewards>();
+            alterImpoppableRewards.difficultySelectMmItems = newButton.GetComponentInChildrenByName<DifficultySelectMmItems>("MMRewardsDifficultyScreen");
+            alterImpoppableRewards.selectedMapId = selectedMapId;
+            alterImpoppableRewards.difficulty = "Hard";
+            alterImpoppableRewards.modes = new string[]{
+                "Impoppable", 
+                ModContent.GameModeId<SupportOnly>(), ModContent.GameModeId<DoubleSpeed>(),
+                "Clicks", ModContent.GameModeId<Mastery>(),
+            };
+
+            var HardMMRewardsDifficultyScreen = hardDifficulty.GetComponentInChildrenByName<Transform>("MMRewardsDifficultyScreen").gameObject;
+            var alterHardRewards = HardMMRewardsDifficultyScreen.AddComponent<AlterRewards>();
+            var hardDifficultySelectMmItems = hardDifficulty.GetComponentInChildrenByName<DifficultySelectMmItems>("MMRewardsDifficultyScreen");
+
+            alterHardRewards.difficultySelectMmItems = hardDifficultySelectMmItems;
+            alterHardRewards.selectedMapId = selectedMapId;
+            alterHardRewards.difficulty = "Hard";
+
+            var hardModes = hardDifficultySelectMmItems.GetModes("Hard");
+            var newHardModes = new string[hardModes._size-2];
+            int index = 0;
+            foreach (string mode in hardModes){
+                if ((mode != "Clicks") && (mode != "Impoppable")){
+                    newHardModes[index] = mode;
+                    index++;
+                }
+            }
+            alterHardRewards.modes = newHardModes;
 
             var matchScale = newButton.AddComponent<MatchScale>();
             matchScale.transformToCopy = proto.transform;
@@ -294,6 +335,15 @@ public class ImpoppablePlus : BloonsTD6Mod
                         Relative Position: -64.3 -65
 
                     */
+                    mapButton.button.AddOnClick(() =>
+                    {
+                        #if DEBUG
+                        ModHelper.Msg<ImpoppablePlus>($"Map {mapButton.mapId} Clicked!");
+                        #endif
+                        selectedMapId = mapButton.mapId;
+                    });
+
+
                     Vector3 impoppableMedalLocalPosition = new Vector3(313.0f, 45.0f);
                     Vector3 chimpsMedalRelativePosition = new Vector3(66.0f, -13.0f);
                     Vector3 supportOnlyRelativePosition = new Vector3(-69.0f, -12.0f);

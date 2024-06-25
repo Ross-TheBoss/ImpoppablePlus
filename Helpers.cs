@@ -1,4 +1,12 @@
-﻿using BTD_Mod_Helper.Extensions;
+﻿using BTD_Mod_Helper;
+using BTD_Mod_Helper.Extensions;
+using Il2Cpp;
+using Il2CppAssets.Scripts.Models;
+using Il2CppAssets.Scripts.Models.ServerEvents;
+using Il2CppAssets.Scripts.Models.Store;
+using Il2CppAssets.Scripts.Models.Store.Loot;
+using Il2CppAssets.Scripts.Unity;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame.Stats;
 using Il2CppNinjaKiwi.Common.ResourceUtils;
 using MelonLoader;
 using UnityEngine;
@@ -64,4 +72,41 @@ public class MatchTexture : MonoBehaviour
     {
         Retexture();
     }
+}
+
+[RegisterTypeInIl2Cpp(false)]
+public class AlterRewards: MonoBehaviour {
+    public DifficultySelectMmItems difficultySelectMmItems;
+
+    public string selectedMapId;
+
+    public string difficulty;
+
+    public string[] modes;
+
+     public AlterRewards(System.IntPtr ptr) : base(ptr)
+    {
+
+    }
+
+    private void Start(){
+        int maxReward = 0;
+        foreach (string mode in modes){
+            int reward = Game.instance.GetMonkeyMoneyReward(selectedMapId, difficulty, mode, Game.instance.model, true, false);
+            #if DEBUG
+            ModHelper.Msg<ImpoppablePlus>($"{selectedMapId} {difficulty}: {mode} = ${reward}");
+            #endif
+            if (reward > maxReward){
+                maxReward = reward;
+            }
+        }
+
+        var largeAmount = difficultySelectMmItems.gameObject.GetComponentInChildrenByName<Transform>("LargeAmount").gameObject;
+        if (largeAmount.activeSelf){
+            difficultySelectMmItems.largeTxt.text = $"${maxReward}";
+        } else {
+            difficultySelectMmItems.smallTxt.text = $"${maxReward}";
+        }
+    }
+
 }
