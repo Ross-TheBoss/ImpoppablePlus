@@ -48,6 +48,7 @@ Upgrades bloon ranks as follows:
 Reduces cash per pop 20 rounds early:
 
 |Rounds|Cash per Pop|
+|-|-|
 |1-30|100%|
 |31-40|50%|
 |41-65|20%|
