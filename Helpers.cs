@@ -1,5 +1,4 @@
-﻿using BTD_Mod_Helper;
-using BTD_Mod_Helper.Extensions;
+﻿using BTD_Mod_Helper.Extensions;
 using Il2CppNinjaKiwi.Common.ResourceUtils;
 using MelonLoader;
 using UnityEngine;
@@ -36,21 +35,33 @@ public class MatchTexture : MonoBehaviour
 
     }
 
-    private void Update()
-    {
+    private void Retexture(){
         Image image = GetComponent<Image>();
         // ModHelper.Msg<ImpoppablePlus>(image.sprite.name);
 
         if (image.sprite.name == "MainBgPanelHematite(Clone)"){
-            image.SetSprite(basicBackground);
             Sprite spr = Sprite.Create(textureToCopy, 
-                                       new Rect(0.0f, 0.0f, image.sprite.texture.width, image.sprite.texture.height),
+                                       new Rect(0.0f, 0.0f, textureToCopy.width, textureToCopy.height),
                                        new Vector2(0.5f, 0.5f),
-                                       image.sprite.pixelsPerUnit,
+                                       5.4f,
                                        0,
                                        SpriteMeshType.FullRect,
-                                       image.sprite.border);
+                                       new Vector4(32f, 32f, 32f, 32f));
             image.SetSprite(spr);
         }
+    }
+    private void Update()
+    {
+        Retexture();
+    }
+
+    private void LateUpdate()
+    {
+        Retexture();
+    }
+
+    private void Start()
+    {
+        Retexture();
     }
 }

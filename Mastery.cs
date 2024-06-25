@@ -122,7 +122,6 @@ public class MasteryRounds : ModRoundSet
         {1, "Mastery mode... red bloons become blue bloons."},
         {2, "Blue bloons become green bloons."},
         {5, "Green bloons become yellow bloons."},
-        // {11, "I think you get the point."},
         {37, "First 2 MOAB-Class Bloons next round."},
         {39, "MOABs become BFBs..."},
         {45, "Fortified MOABs coming up next."},

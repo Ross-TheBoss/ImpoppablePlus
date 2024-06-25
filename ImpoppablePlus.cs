@@ -1,4 +1,3 @@
-using System.Linq;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Enums;
@@ -11,12 +10,11 @@ using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.DifficultySelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.MapSelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.ModeSelect;
+using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppNinjaKiwi.Common;
-using Il2CppNinjaKiwi.Common.ResourceUtils;
 using ImpoppablePlus;
 using MelonLoader;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 [assembly: MelonInfo(typeof(ImpoppablePlus.ImpoppablePlus), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
@@ -44,7 +42,19 @@ public class ImpoppablePlus : BloonsTD6Mod
         result.towers.Do((towerModel) => towerModel.cost *= 10f / 9f);
     }
 
-    #if DEBUG
+    public override void OnMatchStart()
+    {
+        if (MasteryRounds.IsCurrentRoundSet()) {
+            PopupScreen popup = PopupScreen.instance;
+            Sprite spr = ModContent.GetSprite<ImpoppablePlus>("Mastery");
+
+            popup.ShowEventPopup(PopupScreen.Placement.menuCenter, "Mastery Mode", 
+                                "Upgrades bloon ranks. Red bloons become blue bloons. Blue bloons become green bloons. Green bloons become yellow bloons. Etc...", "Ok", 
+                                 null, null, null, Popup.TransitionAnim.Scale, 0, useThisImage: spr);
+        }
+    }
+
+#if DEBUG
     public override void OnUpdate()
     {
         
