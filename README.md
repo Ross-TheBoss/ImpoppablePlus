@@ -61,4 +61,11 @@ And replaces round 100 with 5 fortified BADs.
 ## Impoppable Sandbox
 Sandbox mode with impoppable difficulty tower and upgrade pricing.
 
+## White Border
+![WhiteBorder][WhiteBorder.png]
+## Impoppable Difficulty
+![ImpoppableDifficulty][ImpoppableDifficulty.png]
+## Impoppable Gamemodes
+![ImpoppableModes][ImpoppableModes.png]
+
 [![Requires BTD6 Mod Helper](https://raw.githubusercontent.com/gurrenm3/BTD-Mod-Helper/master/banner.png)](https://github.com/gurrenm3/BTD-Mod-Helper#readme)
